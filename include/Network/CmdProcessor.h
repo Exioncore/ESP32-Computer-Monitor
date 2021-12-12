@@ -2,10 +2,10 @@
 #define CmdProcessor_h
 
 #include <Arduino.h>
-#include <StringProcessor.h>
 
 #include "Display/Display.h"
 #include "Util/Computer.h"
+#include "Util/StringProcessor.h"
 
 class CmdProcessor {
     public:
