@@ -22,3 +22,4 @@ Components used:
 - [Level Shifter](https://www.ebay.com/itm/253048505379)
 - [Micro USB to UART TTL - CP2102](https://www.ebay.com/itm/253285074727)
 - [IR receiver](https://www.ebay.com/itm/252753278127)
+- [Custom 3D printed box](https://www.thingiverse.com/thing:5162571)
