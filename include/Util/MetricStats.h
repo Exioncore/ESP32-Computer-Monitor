@@ -3,20 +3,22 @@
 
 #include <Arduino.h>
 
-class MetricStats{
-    public:
-        MetricStats();
+class MetricStats
+{
+public:
+    MetricStats();
 
-        void set(double x);
-        double get();
-        double get_avg();
-        double get_min();
-        double get_max();
+    void set(double x);
+    double get();
+    double get_avg();
+    double get_min();
+    double get_max();
 
-        void reset();
-    private:
-        double min, curr, avg, max;
-        long count;
+    void reset();
+
+private:
+    double min, curr, avg, max;
+    long count;
 };
 
 #endif

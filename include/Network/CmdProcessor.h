@@ -7,20 +7,21 @@
 #include "Util/Computer.h"
 #include "Util/StringProcessor.h"
 
-class CmdProcessor {
-    public:
-        // Constructor
-        CmdProcessor() {};
-        CmdProcessor(Computer* computer) { this->computer = computer; };
+class CmdProcessor
+{
+public:
+    // Constructor
+    CmdProcessor(){};
+    CmdProcessor(Computer *computer) { this->computer = computer; };
 
-        char* process(char* cmd);
+    char *process(char *cmd);
 
-    private:
-        StringProcessor stringProcessor;
+private:
+    StringProcessor stringProcessor;
 
-        Computer* computer;
-        void processComputer(char* cmd, char* response, char* buff, StringProcessor stringProcessor);
-        void processAudio(char* cmd, char* response, char* buff, StringProcessor stringProcessor);
+    Computer *computer;
+    void processComputer(char *cmd, char *response, char *buff, StringProcessor stringProcessor);
+    void processAudio(char *cmd, char *response, char *buff, StringProcessor stringProcessor);
 };
 
 #endif

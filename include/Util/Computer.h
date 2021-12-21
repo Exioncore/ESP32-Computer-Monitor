@@ -4,18 +4,22 @@
 #include <Arduino.h>
 #include "Util/MetricStats.h"
 
-struct Computer {
-    struct Metrics{
-        struct CPU {
-            char* name;
+struct Computer
+{
+    struct Metrics
+    {
+        struct CPU
+        {
+            char *name;
             MetricStats clock;
             MetricStats temperature;
             MetricStats load;
             MetricStats maxThreadLoad;
             MetricStats power;
         } cpu;
-        struct GPU {
-            char* name;
+        struct GPU
+        {
+            char *name;
             MetricStats coreClock;
             MetricStats memClock;
             MetricStats temperature;
@@ -23,15 +27,18 @@ struct Computer {
             MetricStats memUsage;
             MetricStats power;
         } gpu;
-        struct RAM {
+        struct RAM
+        {
             MetricStats memUsage;
             uint16_t memCapacity;
         } ram;
-        struct Network {
+        struct Network
+        {
             uint16_t downloadSpeedKBs;
             uint16_t uploadSpeedKBs;
         } network;
-        struct FanController {
+        struct FanController
+        {
             MetricStats liquidTemperature;
             MetricStats ambientTemperature;
         } fanController;
@@ -41,14 +48,16 @@ struct Computer {
         unsigned long last_update = ULONG_MAX;
     } metrics;
 
-    struct Audio {
-        std::vector<char*> presets;
+    struct Audio
+    {
+        std::vector<char *> presets;
         bool initialized = false;
-    } audio;   
+    } audio;
 
-    struct Prismatik {
+    struct Prismatik
+    {
         bool enabled = false;
     } prismatik;
 };
 
-#endif 
+#endif

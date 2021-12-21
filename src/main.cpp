@@ -13,7 +13,7 @@
 #include "Util/SerialHandler.h"
 #include "Network/CmdProcessor.h"
 
-#define SERIAL_BUFFER_SIZE  150
+#define SERIAL_BUFFER_SIZE 150
 
 TaskHandle_t core0_task1;
 TaskHandle_t core1_task1;
@@ -40,7 +40,8 @@ uint32_t ir_value;
 /**
  * Core dedicated to Adalight
  **/
-void core0_task1_loop(void * pvParameters) {
+void core0_task1_loop(void *pvParameters)
+{
   //// Setup
   // Initialize Serial
   Serial2.begin(921600, SERIAL_8N1, ADALIGHT_SERIAL_RX, ADALIGHT_SERIAL_TX);
@@ -57,11 +58,12 @@ void core0_task1_loop(void * pvParameters) {
 /**
  * Core dedicated to Serial messages processing, Display driving and IR receiver
  **/
-void core1_task1_loop(void * pvParameters) {
+void core1_task1_loop(void *pvParameters)
+{
   //// Setup
   // Initialize Serial
   Serial.begin(500000);
-  serial_handler = SerialHandler(&Serial, serial_buffer, SERIAL_BUFFER_SIZE, '\n');
+  serial_handler = SerialHandler(&Serial, SERIAL_BUFFER_SIZE, '\n');
   cmd_processor = CmdProcessor(&computer);
   // Initialize Display
   display.init(DISPLAY_CS, DISPLAY_DC, DISPLAY_MOSI, DISPLAY_SCK, DISPLAY_RST, DISPLAY_MISO);
@@ -73,50 +75,55 @@ void core1_task1_loop(void * pvParameters) {
   // IR Receiver
   irrecv.enableIRIn();
   //// Loop
-  while (true) {
+  while (true)
+  {
     // Read SerialPort & Process commands
-    if (serial_handler.update() != 0) {
-      char* response = (char*)cmd_processor.process(serial_handler.buffer);
+    if (serial_handler.update() != 0)
+    {
+      char *response = (char *)cmd_processor.process(serial_handler.buffer);
       Serial.println(response);
 
       delete response;
       serial_handler.discardBuffer();
     }
-    
+
     // Check for IR commands
-    if (irrecv.decode(&results)) {
+    if (irrecv.decode(&results))
+    {
       ir_value = results.value;
       irrecv.resume();
     }
-    
+
     // Update Display
     uint16_t display_response = display.update(ir_value);
-    switch (display_response) {
-      case 0:
-      {
-        main_page = 0;
-        display.setPage(&monitor_1); 
-        break;
-      }
-      case 1: 
-      {
-        audio_switcher.set_caller_page(main_page);
-        display.setPage(&audio_switcher); 
-        break;
-      }
-      case 2: 
-      {
-        led_switcher.set_caller_page(main_page);
-        display.setPage(&led_switcher); 
-        break;
-      }
-      case 3: 
-      {
-        main_page = 3;
-        display.setPage(&monitor_2); 
-        break;
-      }
-      default: break;
+    switch (display_response)
+    {
+    case 0:
+    {
+      main_page = 0;
+      display.setPage(&monitor_1);
+      break;
+    }
+    case 1:
+    {
+      audio_switcher.set_caller_page(main_page);
+      display.setPage(&audio_switcher);
+      break;
+    }
+    case 2:
+    {
+      led_switcher.set_caller_page(main_page);
+      display.setPage(&led_switcher);
+      break;
+    }
+    case 3:
+    {
+      main_page = 3;
+      display.setPage(&monitor_2);
+      break;
+    }
+    default:
+      break;
     }
     ir_value = UINT32_MAX;
 
@@ -124,31 +131,32 @@ void core1_task1_loop(void * pvParameters) {
   }
 }
 
-void setup() {
+void setup()
+{
   // General initialization
   setCpuFrequencyMhz(240);
   EEPROM.begin(EEPROM_SIZE);
 
   // Initialize cores
   xTaskCreatePinnedToCore(
-                    core0_task1_loop,     /* Task function. */
-                    "Core 0, Task 1",     /* name of task. */
-                    10000,                /* Stack size of task */
-                    NULL,                 /* parameter of the task */
-                    1,                    /* priority of the task */
-                    &core0_task1,         /* Task handle to keep track of created task */
-                    0);                   /* pin task to core 0 */
+      core0_task1_loop, /* Task function. */
+      "Core 0, Task 1", /* name of task. */
+      10000,            /* Stack size of task */
+      NULL,             /* parameter of the task */
+      1,                /* priority of the task */
+      &core0_task1,     /* Task handle to keep track of created task */
+      0);               /* pin task to core 0 */
   xTaskCreatePinnedToCore(
-                    core1_task1_loop,     /* Task function. */
-                    "Core 1, Task 1",     /* name of task. */
-                    10000,                /* Stack size of task */
-                    NULL,                 /* parameter of the task */
-                    1,                    /* priority of the task */
-                    &core1_task1,         /* Task handle to keep track of created task */
-                    1);                   /* pin task to core 1 */
+      core1_task1_loop, /* Task function. */
+      "Core 1, Task 1", /* name of task. */
+      10000,            /* Stack size of task */
+      NULL,             /* parameter of the task */
+      1,                /* priority of the task */
+      &core1_task1,     /* Task handle to keep track of created task */
+      1);               /* pin task to core 1 */
 }
 
 // Runs on core 1
-void loop() { 
-  
+void loop()
+{
 }
